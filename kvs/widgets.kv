@@ -1,0 +1,145 @@
+#: import shorten_text tools.shorten_text
+
+<DownloadCard>:
+	padding: 20
+	spacing: 20
+	size_hint: 1., None
+	height: 200
+	root: app.root
+	canvas.before:
+		Color:
+			rgba: .5, .5, .5, .5
+		Rectangle:
+			size: self.size[0], 5
+			pos: self.pos
+	AsyncImage:
+		source: root.icon
+		size_hint_x: None
+		width: self.size[1]
+		on_load:
+			allow_stretch: False
+			keep_ratio: True
+
+	BoxLayout:
+		orientation: "vertical"
+		Label:
+			text: root.title
+			color: 0, 0, 0, 1
+			halign: "left"
+			text_size: self.size
+			Button:
+				text: "%s"%icon("icofont-close-line")
+				size_hint_y: None
+				size: 50, 50
+				pos: self.parent.pos[0]+self.parent.size[0]-self.size[0]-20, self.parent.pos[1]+self.parent.pos[1]-self.size[1]
+				color: .7, .7, .7, 1
+				markup: True
+				background_down: ""
+				background_normal: ""
+				background_color: 0, 0, 0, 0
+				on_release: root.calcel = True
+				canvas.before:
+					Color:
+						rgba: .85, 0.85, 0.85, .5
+					RoundedRectangle:
+						size: self.size
+						pos: self.pos
+						radius: [self.size[1]/2]
+			
+		BoxLayout:
+			orientation: "vertical"
+			BoxLayout:
+				Label:
+					text: root.state
+					color: .7, .7, 0.7, 1
+					size_hint_x: None
+					markup: True
+					width: self.texture_size[0]
+					font_size: "25px"
+				Label:
+					text: f"{root.loaded_bytes}/{root.filesize}"
+					color: .7, .7, .7, 1
+					font_size: "25px"
+					
+			ProgressBar:
+				id: progressbar
+				min: 0
+				max: 100
+				value: 0
+			Label:
+				text: root.length
+				color: .7, .7, 0.7, 1
+				size_hint_x: None
+				font_size: "25px"
+				text_size: self.size
+				
+				
+				
+<ViewCard>:
+	padding: 0
+	orientation: "vertical"
+	size_hint_y: None
+	height: 859
+	canvas.before:
+		Color:
+			rgba: 1, 1, 1, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+			
+	AsyncImage:
+		id: im
+		source: root.source
+		size_hint_y: None
+		height: 650
+		#mipmap: True
+		on_load:
+			self.allow_stretch=  True
+			self.keep_ratio =  False
+			
+		Label:
+			text: root.length
+			color: 1, 1, 1, 1
+			size_hint: None, None
+			width: self.texture_size[0]
+			height: self.texture_size[1]
+			pos: self.parent.pos[0]+self.parent.size[0]-self.size[0], self.parent.pos[1]+20
+			canvas.before:
+				Color:
+					rgba: .25, .25, .25, 1
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					
+	BoxLayout:
+		size_hint_y: .2
+		orientation: "vertical"
+		Label:
+			text_size: self.size
+			text: shorten_text(root.title, self.font_size, [self.text_size[0]*2, self.text_size[1]])
+			color: 0, 0, 0, 1
+			halign: "left"
+			font_size: "15dp"
+		BoxLayout:
+			Label:
+				text: "%s"%icon("icofont-eye")+str(root.views)
+				markup: True
+				text_size: self.size
+				color: .50, .5, .5, 1
+			Button:
+				text: "%s"%icon("icofont-download")
+				text_size: self.size
+				markup: True
+				color: .5, .5, .5, 1
+				size_hint_x: None
+				background_down: ""
+				background_normal: ""
+				background_color: 0, 0, 0, 0
+				on_release:
+					app.root.ids.quality_selection_box.ytobject = root.ytobject
+					app.root.ids.quality_selection_box.open()
+					
+					
+					
+		
+			

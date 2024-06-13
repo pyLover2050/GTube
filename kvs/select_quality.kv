@@ -1,0 +1,39 @@
+<SelectQuality>:
+	background: ""
+	background_color: 1,1,1,1
+	size_hint_x: .8
+	size_hint_y: None
+	height: 900
+	padding: 25
+	auto_dismiss: False
+	BoxLayout:
+		id: con
+		orientation: "vertical"
+		GridLayout:
+			id: gl
+			cols: 3
+			size_hint_y: .9
+		BoxLayout:
+			size_hint_y: .1
+			Button:
+				text: "cancel"
+				size_hint: None, None
+				color: .8, 0, 0, 1
+				width: self.texture_size[0]
+				on_release: root.dismiss()
+				background_down: ""
+				background_normal: ""
+				background_color: 0, 0, 0, 0
+			Label:
+				#balank
+			Button:
+				text: "ok"
+				color: .1, 1, 0, 1
+				size_hint: None, None
+				background_down: ""
+				background_nornal: ""
+				background_color: 0, 0, 0, 0
+				#size: self.texture_size
+				on_release:
+					app.root.download(root.ytobject, root.selected_data)
+					root.dismiss()		

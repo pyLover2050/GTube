@@ -1,0 +1,52 @@
+<SearchScreen>:
+	name: "search screen"
+
+	BoxLayout:
+		orientation: "vertical"
+		
+		BoxLayout:
+			size_hint_y: .1
+			padding: 30
+			canvas.before:
+				Color:
+					rgba: .75, .75, .75, 1
+				Rectangle:
+					size: self.size[0], 2
+					pos: self.pos
+					
+			TextInput:
+				id: search_text_bar
+				size_hint_x: .85		
+				hint_text: "Search..."
+				multiline: False
+				text_size: self.size
+				font_size: "50px"
+				background_active: ""
+				background_normal: ""
+				padding: [10, self.size[1]/2-self.font_size/2, 0, 0]
+				on_text: if "\n" in self.text: self.text = self.text.replace("\n", " ")
+				on_text_validate: app.root.search(self.text)
+			Button:
+				text: "%s"%icon("icofont-ui-search", font_name="ui-font")
+				valign: "center"
+				halign: "center"
+				size_hint_x: .15
+				color: .5, .5, .5, 1
+				font_size: "55px"
+				text_size: self.size
+				markup: True
+				background_down: ""
+				background_normal: ""
+				background_color: 0, 0, 0, 0
+				on_release: app.root.search(search_text_bar.text)
+				
+			
+		ScrollView:
+			do_scroll_x: False
+			GridLayout:
+				id: history_label_container
+				cols: 2
+				padding: [25, 25, 0, 0]
+				spacing: 25
+				size_hint_y: None
+				height: self.minimum_height		

@@ -1,0 +1,110 @@
+#: import icon iconfonts.icon
+#: import rgba kivy.utils.rgba
+
+<MainWin>:
+	id: main
+	orientation: "vertical"
+	quality_selection_box: quality_selection_box.__self__
+	canvas.before:
+		Color:
+			rgba: 1, 1, 1, 1
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			
+	SelectQuality:
+		id: quality_selection_box
+		on_parent: if self.parent == root: root.remove_widget(self)
+		
+		
+	ModalView:
+		text: ""
+		id: show_info
+		auto_dismiss: False
+		size_hint: None, None
+		size: 1000, 600
+		background: ""
+		on_parent: if self.parent == main: main.remove_widget(self)
+		BoxLayout:
+			orientation: "vertical"
+			padding: 20
+			BoxLayout:
+				size_hint_y: .8
+				ScrollView:
+					do_scroll_x: False
+					Label:
+						size_hint_y: None
+						height: self.texture_size[1]
+						text_size: self.width, None
+						text: show_info.text
+						font_size: "58px"
+						valign: "middle"
+						halign: "center"
+						color: rgba("#7deb34")
+			Button:
+				text: "ok"
+				color: 1, 1, 1
+				size_hint_y: .2
+				on_release:
+					show_info.dismiss()
+				
+			
+	ScreenManager:
+		id: sm
+		HomeScreen:
+			id: home_screen				
+		SearchScreen:
+			id: search_screen
+						
+					
+		Screen:
+			name: "downloading screen"
+			BoxLayout:
+				id: second_body
+				orientation: "vertical"
+				downloader_scroll: downloader_scroll.__self__
+				info_not_downloading: info_not_downloading.__self__
+				BoxLayout:
+					size_hint_y: None
+					height: 150
+					padding: 5
+					
+					canvas.before:
+						Color:
+							rgba: .5, .5, .5, .5
+						Rectangle:
+							size: self.size[0], 5
+							pos: self.pos
+					Button:
+						text: "%s"%icon("icofont-close-line")
+						markup: True
+						size_hint_x: None
+						color: .25, .25, .25, 1
+						font_size: "75px"
+						background_normal: ""
+						background_down: ""
+						background_color: 0, 0, 0, 0
+						on_release: sm.current = "home"
+					Label:
+						#blank
+					Image:
+						source: "icon.png"
+						size_hint_x: None
+				Label:
+					id: info_not_downloading
+					text: "not downloading anything"
+					color: .75, .75, .75, 1
+						
+				ScrollView:
+					id: downloader_scroll
+					do_scroll_x: False
+					on_parent: if len(root.downloading_list) < 1 and self.parent == second_body: second_body.remove_widget(self)
+					BoxLayout:
+						id: downloading_box_con
+						orientation: "vertical"
+						size_hint_y: None
+						height: self.minimum_height
+						
+								
+					
+		

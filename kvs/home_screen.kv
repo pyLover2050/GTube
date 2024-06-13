@@ -1,0 +1,105 @@
+<HomeScreen>:
+	name: "home"
+	BoxLayout:
+		id: home_body_widget
+		loader_label: loader_label.__self__
+		home_scroller: home_scroller.__self__
+		padding: [30, 0, 30, 0]
+		spacing: 30
+		orientation: "vertical"
+				
+		BoxLayout:
+			size_hint_y: None
+			height: 150
+			AsyncImage:
+				source: "icon.png"
+				size_hint: None, None
+			SearchUI:
+				id: searchui
+				size_hint_y: None
+				padding: [30, 0, 0, 0]
+				canvas.before:
+					Color:
+						rgba: .85, .85, .85, .5
+					RoundedRectangle:
+						size: self.size
+						pos: self.pos
+						radius: [self.size[1]/2]
+				Label:
+					id: search_blind
+					text: "Search"
+					size_hint_x: .9
+					color: .25, .25, .25, 1
+					text_size: self.size
+					halign: "left"
+					valign: "middle"
+					shorten: True
+					shorten_from: "right"
+				Label:
+					text: "%s"%icon("icofont-ui-search", font_name="ui-font")
+					size_hint_x: .1
+					markup: True
+					color: .25, .25, .25, 1
+					
+					
+			Button:
+				id: dtbutton
+				text: "%s"%icon("icofont-download")
+				size_hint: None, None
+				color: 0, 0, 0, 1
+				bold: True
+				markup:True
+				anchor_x: "center"
+				anchor_y: "center"
+				font_size: "75px"
+				background_down: ""
+				background_normal: ""
+				background_color: 0, 0, 0, 0
+				on_release: app.root.ids.sm.current = "downloading screen"
+				ShowDownloadingLabel:
+					id: count_downloading_label
+					text: "0"
+					alpa: 1. if int(self.text) > 0 else 0.
+					size_hint: None, None
+					size: 50, 50
+					font_size: "25px"
+					color: .75, .75, .75, self.alpa
+					pos: self.parent.pos[0]+self.parent.size[0]-self.size[0], self.parent.pos[1]+self.parent.size[1]-self.size[1]
+					canvas.before:
+						Color:
+							rgba: self.bg_canvas_color
+						RoundedRectangle:
+							size: self.size
+							pos: self.pos
+							radius: [self.size[1]/2]
+										
+		Label:
+			id: loader_label
+			text: "%s"%icon("icofont-spinner")
+			p: 0
+			color: .0, .0, .8, 1
+			markup: True
+			font_size: "100px"
+			on_parent: home_body_widget.remove_widget(self)
+			canvas:
+				Clear:
+				PushMatrix:
+				Rotate:
+					angle: -self.p
+					origin: self.center_x, self.center_y
+				Rectangle:
+					size: [self.font_size]*2
+					pos: self.center_x-self.font_size/2, self.center_y-self.font_size/2
+					texture: self.texture
+					PopMatrix:
+							
+						
+		ScrollView:
+			id: home_scroller
+			do_scroll_x: False
+			BoxLayout:
+				id: viewbox_container
+				orientation: "vertical"
+				padding: 10
+				size_hint_y: None
+				height: self.minimum_height
